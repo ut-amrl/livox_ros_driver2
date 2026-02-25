@@ -317,6 +317,24 @@ else(ROS_EDITION STREQUAL "ROS2")
     EXECUTABLE ${PROJECT_NAME}_node
   )
 
+  # Find Eigen3 for deskewing
+  find_package(Eigen3 REQUIRED)
+
+  # Point cloud range filter executable
+  ament_auto_add_executable(pointcloud_range_filter
+    src/pointcloud_range_filter.cpp
+  )
+  
+  target_include_directories(pointcloud_range_filter PUBLIC
+    ${PCL_INCLUDE_DIRS}
+    ${EIGEN3_INCLUDE_DIR}
+  )
+  
+  target_link_libraries(pointcloud_range_filter
+    ${PCL_LIBRARIES}
+    Eigen3::Eigen
+  )
+
   if(BUILD_TESTING)
     find_package(ament_lint_auto REQUIRED)
     # the following line skips the linter which checks for copyrights
